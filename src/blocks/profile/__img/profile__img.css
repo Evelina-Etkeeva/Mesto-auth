@@ -1,0 +1,43 @@
+.profile__img{
+  border-radius: 50%;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  justify-self: start;
+  align-self: center;
+  grid-area: ava;
+
+  object-fit: cover;
+  object-position: center;
+  width: 120px;
+  height: 120px;
+  cursor: pointer;
+  transition: opacity .3s;
+}
+@media screen and (max-width: 880px) {
+  .profile__img{
+    justify-self: center;
+  }
+}
+.profile__img:hover{
+  opacity: 0.2;
+}
+.profile__img-on-hover{
+  align-self: center;
+  justify-self: center;
+  height: 26px;
+  width:26px;
+ 
+ 
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  grid-area: ava;
+  object-fit: cover;
+  opacity: 1;
+  transition: opacity .2s;
+}
+.profile__img-on-hover:hover{
+  opacity: 1;
+}

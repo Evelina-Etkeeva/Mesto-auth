@@ -1,0 +1,9 @@
+.popup__image-content{
+    width: max-content;
+    justify-content: center;
+    align-content: center;
+    margin: auto;
+    position: relative;
+    padding: 0;
+    display: grid;
+}

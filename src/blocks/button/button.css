@@ -1,0 +1,7 @@
+.button{
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0);
+}

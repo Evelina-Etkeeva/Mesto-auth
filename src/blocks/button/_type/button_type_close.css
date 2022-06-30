@@ -1,0 +1,16 @@
+.button_type_close{
+  background-image: url(../../../images/close_icon.svg);
+  background-position: center;
+  background-size: contain;
+  transition: opacity .3s;
+  background-color: rgba(255, 255, 255, 0);
+  border: none;
+  background-repeat: no-repeat;
+
+}
+.button_type_close:hover{
+  opacity: 0.6;
+}
+
+
+

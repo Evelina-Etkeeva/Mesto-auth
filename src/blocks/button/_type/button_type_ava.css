@@ -1,0 +1,33 @@
+.button_type_ava{
+    align-self: center;
+    justify-self: center;
+    height: 120px;
+    width:120px;
+    cursor: pointer;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    grid-area: ava;
+    object-fit: cover;
+    opacity: 0;
+    background-image: url(./../../../images/avahover.svg);
+    background-position: center;
+    background-color: rgba(0, 0, 0, 0.8);
+    border: none;
+    transition:  opacity .3s;
+    background-repeat: no-repeat;
+  }
+
+  .button_type_ava:hover{
+    opacity: 1;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    grid-area: ava;
+    object-fit: cover;
+    align-self: center;
+    justify-self: center;
+  }
+
+
+

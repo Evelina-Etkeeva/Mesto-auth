@@ -1,0 +1,16 @@
+.element{
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  background-color: white;
+  border-radius: 10px;
+  box-sizing: border-box;
+  max-width: 282px;
+  /* min-height: 361px; */
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: 282px 80px;
+  justify-content: center;
+  align-content: center;
+}

@@ -1,0 +1,7 @@
+.footer{
+  max-width: 880px;
+  margin: 0 auto;
+  flex-shrink: 0;
+  width: 100%;
+  font-family: 'Inter', 'Arial', 'Helvetica', sans-serif;
+}

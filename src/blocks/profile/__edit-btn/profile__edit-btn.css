@@ -1,0 +1,14 @@
+.profile__edit-btn{
+  grid-area: edit;
+  margin: 0 -42px 0 0;
+  padding: 0;
+  align-self: baseline;
+  box-sizing: border-box;
+  justify-self: start;
+}
+
+@media screen and (max-width: 880px) {
+.profile__edit-btn{
+  margin: 0 0 0 0;
+  }
+}

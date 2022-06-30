@@ -1,0 +1,13 @@
+.element__image{
+  object-fit:cover; /*когда научусь - добавлю возможность пользователю менять формат и позиционирование изображения под квадратные иконки*/
+  grid-column-start: 1;
+  grid-column-end: 3;
+  grid-row-start: 1;
+  grid-row-end: 2;
+  object-position: center;
+  display: block;
+  height: 282px;
+  width: 282px;
+  cursor: pointer;
+  margin: 0 0 80px 0;
+}

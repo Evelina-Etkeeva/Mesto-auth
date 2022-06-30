@@ -1,0 +1,17 @@
+.button_type_like{
+  background-image: url(../../../images/vectorlike.svg);
+  background-position: center;
+  background-size: cover;
+  width: 22px;
+  height: 19px;
+  transition: opacity .3s;
+  border: none;
+}
+
+.button_type_like:hover{
+  opacity: 0.6;
+}
+
+.active{
+  background-image: url(../../../images/union.svg);
+}

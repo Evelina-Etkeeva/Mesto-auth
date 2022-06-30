@@ -1,0 +1,16 @@
+.popup__save-btn{
+  margin: 48px 0 0 0;
+  padding: 0;
+}
+
+@media screen and (max-width: 880px) {
+  .popup__save-btn{
+    margin: 45px 0 0 0;
+  }
+}
+
+.popup__save-btn_inactive{
+  background-color: white;
+  color: rgba(196, 196, 196, 1);
+  border: 1px solid rgba(196, 196, 196, 1);
+}

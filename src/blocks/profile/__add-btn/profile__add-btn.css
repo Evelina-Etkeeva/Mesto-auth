@@ -1,0 +1,14 @@
+.profile__add-btn{
+  grid-area: add_button;
+  justify-self: end;
+  align-self: center;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+@media screen and (max-width: 880px) {
+  .profile__add-btn{
+    margin: 36px 0 0;
+  }
+}

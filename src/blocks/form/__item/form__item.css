@@ -1,0 +1,75 @@
+/*одно поле формы*/
+.form__item {
+  border: 0;
+  width: 100%;
+  max-width: 358px;
+  min-height: 27px;
+  box-sizing: border-box;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  opacity: 1;
+  background-color: transparent;
+  margin-top: 30px;
+  font-size: 14px;
+  line-height: 17px;
+  font-family: 'Inter', 'Arial', 'Helvetica', sans-serif;
+  padding: 0 0 2px 0;
+}
+
+/*замена цвета при выборе формы*/
+.form__item:focus{
+  outline-color: rgba(0, 0, 0, 0.1);
+}
+
+/*Плэйсхолдеры*/
+.form__item::placeholder {
+  font-size: 14px;
+  font-family: 'Inter', 'Arial', 'Helvetica', sans-serif;
+  color: #000;
+  line-height: 17px;
+  }
+
+.form__item::-webkit-input-placeholder{
+  font-size: 14px;
+  font-family: 'Inter', 'Arial', 'Helvetica', sans-serif;
+  color: #000;
+  line-height: 17px;
+}
+
+.form__item::-moz-placeholder{
+  font-size: 14px;
+  font-family: 'Inter', 'Arial', 'Helvetica', sans-serif;
+  color: #000;
+  line-height: 17px;
+}
+
+.form__item::-ms-input-placeholder{
+  font-size: 14px;
+  font-family: 'Inter', 'Arial', 'Helvetica', sans-serif;
+  color: #000;
+  line-height: 17px;
+}
+
+@media screen and (max-width: 880px) {
+  .form__item{
+    max-width: 238px;
+  }
+
+}
+
+.form__item-error{
+  border-bottom: 1px solid red;
+}
+.place-name-error{
+  display: none;
+}
+
+.form__error_active{
+  color: red;
+  font-size: 12px;
+  line-height: 15px;
+  font-family: 'Inter', 'Arial', 'Helvetica', sans-serif;
+  display: inline;
+  font-style: normal;
+  font-weight: normal;
+  max-width: 358px;
+}

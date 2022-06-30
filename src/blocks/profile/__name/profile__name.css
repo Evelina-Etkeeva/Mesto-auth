@@ -1,0 +1,30 @@
+.profile__name{
+  font-family: 'Inter', 'Arial', 'Helvetica', sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 42px;
+  line-height: 48px;
+  /* почему поле для высоты строки добавляется и сверху и снизу - не могу поставить кнопку в одну линию с текстом*/
+  color: #FFFFFF;
+  margin: 0;
+  padding: 0;
+  grid-area: name;
+  justify-self: start;
+  max-width: 480px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  align-self: baseline;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+@media screen and (max-width: 880px) {
+  .profile__name{
+    font-size: 27px;
+    max-width: 250px;
+    line-height: 33px;
+    justify-self: end;
+  }
+}
