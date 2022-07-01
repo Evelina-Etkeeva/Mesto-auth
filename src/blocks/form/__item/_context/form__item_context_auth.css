@@ -1,0 +1,33 @@
+.form__item_context_auth{  
+        border-bottom: 1px solid #cccc;
+
+}
+
+.form__item_context_auth:focus{
+outline-color: rgba(0, 0, 0, 0.1);
+border: 0;
+background-color: transparent;
+color: #fff;
+outline: none;
+}
+
+/*Плэйсхолдеры*/
+.form__item_context_auth::placeholder {
+color: #fff;
+line-height: 17px;
+}
+
+.form__item_context_auth::-webkit-input-placeholder{
+color: #fff;
+line-height: 17px;
+}
+
+.form__item_context_auth::-moz-placeholder{
+color: #fff;
+line-height: 17px;
+}
+
+.form__item_context_auth::-ms-input-placeholder{
+color: #fff;
+}
+      

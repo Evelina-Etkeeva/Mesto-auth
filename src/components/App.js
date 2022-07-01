@@ -9,6 +9,10 @@ import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup";
+import ProtectedRoute from './ProtectedRoute';
+import { Route, Switch } from 'react-router-dom';
+import SignIn from './SignIn';
+import SignUp from './SignUp';
 
 function App() {
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
@@ -17,6 +21,7 @@ function App() {
   const [cards, setCards] = useState([]);
   const [selectedCard, setSelectedCard] = useState(null);
   const [currentUser, setCurrentUser] = useState({});
+  const [loggedIn, setLoggedIn] = useState(true);
 
   useEffect(() => {
     Promise.all([myApi.getInitialCards(), myApi.getUserData()])
@@ -130,59 +135,48 @@ function App() {
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
-      <div className="page">
-        <Header />
-        <Main
-          onAddPlace={handleAddCardClick}
-          onEditAvatar={handleEditAvatarClick}
-          onEditProfile={handleEditProfileClick}
-          cards={cards}
-          onCardClick={handleCardClick}
-          onCardLike={handleCardLike}
-          onCardDelete={handleCardDelete}
-        />
-        <Footer />
-        <EditProfilePopup
-          isOpen={isEditProfilePopupOpen}
-          onClose={closeAllPopups}
-          onSubmit={handleUpdateUser}
-        />
-        <AddPlacePopup
-          isOpen={isAddCardPopupOpen}
-          onClose={closeAllPopups}
-          onSubmit={handleAddPlaceSubmit}
-        />
-        <div className="popup popup_content_delete-card">
-          <div className="popup__forms-container">
-            <button
-              type="button"
-              aria-label="close"
-              className="button button_type_close popup__close-btn"
-            ></button>
-            <form
-              className="form form_content_add-card"
-              name="new-card-input"
-              noValidate
-            >
-              <h2 className="form__header">Вы уверены?</h2>
-              <button
-                type="submit"
-                className="button button_type_save popup__save-btn"
-                value="Сохранить"
-              >
-                Да
-              </button>
-            </form>
-          </div>
-        </div>
-        <ImagePopup card={selectedCard} onClose={closeAllPopups} />
-        <EditAvatarPopup
-          isOpen={isEditAvatarPopupOpen}
-          onClose={closeAllPopups}
-          onSubmit={handleUpdateAvatar}
-        />
-      </div>
-    </CurrentUserContext.Provider>
+    <div className="page">
+      <Switch>
+        <Route path="/sign-in" loggedIn={loggedIn}>
+          <SignIn />
+        </Route>
+        <Route path="/sign-up" loggedIn={loggedIn}>
+          <SignUp />
+        </Route>
+        <ProtectedRoute path='/' loggedIn={loggedIn}>
+          <Header />
+          <Main
+            onAddPlace={handleAddCardClick}
+            onEditAvatar={handleEditAvatarClick}
+            onEditProfile={handleEditProfileClick}
+            cards={cards}
+            onCardClick={handleCardClick}
+            onCardLike={handleCardLike}
+            onCardDelete={handleCardDelete}
+          />
+          <Footer />
+          <EditProfilePopup
+            isOpen={isEditProfilePopupOpen}
+            onClose={closeAllPopups}
+            onSubmit={handleUpdateUser}
+          />
+          <AddPlacePopup
+            isOpen={isAddCardPopupOpen}
+            onClose={closeAllPopups}
+            onSubmit={handleAddPlaceSubmit}
+          />
+        
+          <ImagePopup card={selectedCard} onClose={closeAllPopups} />
+          <EditAvatarPopup
+            isOpen={isEditAvatarPopupOpen}
+            onClose={closeAllPopups}
+            onSubmit={handleUpdateAvatar}
+          />
+          
+          </ProtectedRoute>
+      </Switch>
+    </div>
+  </CurrentUserContext.Provider>
   );
 }
 

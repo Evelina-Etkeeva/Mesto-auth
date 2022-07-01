@@ -1,0 +1,19 @@
+.button_type_login{
+  transition: opacity .3s;
+  text-decoration: none;
+  border: 0;
+  font-family: 'Inter', 'Arial', 'Helvetica', sans-serif;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 22px;
+  color: white;
+  border-radius: 2px;
+  padding: 0;
+  align-self: center;
+  justify-self: end;
+}
+
+.button_type_login:hover{
+  opacity: 0.8;
+}
+
