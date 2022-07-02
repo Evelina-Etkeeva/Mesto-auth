@@ -6,5 +6,8 @@
   display: grid;
   align-content: center;
   grid-template-areas: 
-  "logo button";
+  "logo email button";
+  grid-auto-flow: row;
+  gap: 20px;
+  grid-template-columns: 1fr max-content max-content;
 }

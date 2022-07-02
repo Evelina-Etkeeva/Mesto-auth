@@ -5,5 +5,6 @@
   padding: 0;
   border: none;
   height: 100%;
-  grid-template-rows: repeat(5, min-content);
+  
+  grid-auto-rows: max-content;
 }

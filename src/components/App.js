@@ -9,19 +9,26 @@ import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup";
-import ProtectedRoute from './ProtectedRoute';
-import { Route, Switch } from 'react-router-dom';
-import SignIn from './SignIn';
-import SignUp from './SignUp';
+import ProtectedRoute from "./ProtectedRoute";
+import { Route, Switch, Redirect, useHistory } from "react-router-dom";
+import Signin from "./Signin";
+import Signup from "./Signup";
+import { register, login, checkUser } from "../utils/auth";
+import InfoTooltip from "./InfoTooltip";
 
 function App() {
+  const history = useHistory();
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddCardPopupOpen, setIsAddCardPopupOpen] = useState(false);
   const [cards, setCards] = useState([]);
   const [selectedCard, setSelectedCard] = useState(null);
   const [currentUser, setCurrentUser] = useState({});
-  const [loggedIn, setLoggedIn] = useState(true);
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [infoTooltipIsOpen, setInfoTooltipIsOpen] = useState(false);
+  const [infoTooltipMessage, setInfoTooltipMessage] = useState("");
+  const [infoTooltipAlt, setInfoTooltipAlt] = useState("");
+  const [infoTooltipSuccess, setInfoTooltipSuccess] = useState(true);
 
   useEffect(() => {
     Promise.all([myApi.getInitialCards(), myApi.getUserData()])
@@ -79,6 +86,7 @@ function App() {
     setIsEditAvatarPopupOpen(false);
     setIsEditProfilePopupOpen(false);
     setIsAddCardPopupOpen(false);
+    setInfoTooltipIsOpen(false);
     setSelectedCard(null);
   }
 
@@ -133,50 +141,129 @@ function App() {
       });
   }
 
+  function handleSignupSubmit(data) {
+    register(data.password, data.email)
+      .then(() => {
+        history.push("/signin");
+        setInfoTooltipSuccess(true);
+        setInfoTooltipMessage("Вы успешно зарегистрировались!");
+        setInfoTooltipAlt("Изображение информирующее, что всё хорошо!");
+      })
+      .catch((err) => {
+        setInfoTooltipSuccess(false);
+        setInfoTooltipMessage("Что-то пошло не так! Попробуйте ещё раз.");
+        setInfoTooltipAlt("Изображение информирующее, что всё плохо!");
+        console.log("Something went wrong: ", err);
+      })
+      .finally(() => {
+        setInfoTooltipIsOpen(true);
+      });
+  }
+
+  function handleSigninSubmit(data) {
+    login(data.password, data.email)
+      .then((res) => {
+        if (res.token) {
+          // сохраняем токен
+          localStorage.setItem("token", res.token);
+          setLoggedIn(true);
+          // history.push("/");
+          // console.log(`loggedIn: ${loggedIn}`);
+          console.log(`response: ${res.token}`); // - false
+        }
+       
+      
+      })
+      .catch((err) => {
+        console.log("Something went wrong: ", err);
+      });
+  }
+
+  function tokenCheck() {
+    const token = localStorage.getItem("token");
+    console.log(`loggedIn: ${loggedIn}`);
+    if (token) {
+      checkUser(token)
+        .then(res => {
+          if (res){
+            setLoggedIn(true);
+            console.log(`loggedIn 2: ${loggedIn}`);
+            return 'logged in';
+          }
+        })
+        .catch((err) => {
+          console.log("Something went wrong: ", err);
+        });
+    }
+  }
+
+  function handleSignout(){
+    localStorage.removeItem("token");
+    setLoggedIn(false);
+    history.push("/signin");
+  }
+
+
+
+  React.useEffect(() => {
+    tokenCheck()
+  }, [])
+
+  // React.useEffect(() => {
+  //   history.push("/")
+  // }, [loggedIn])
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
-    <div className="page">
-      <Switch>
-        <Route path="/sign-in" loggedIn={loggedIn}>
-          <SignIn />
-        </Route>
-        <Route path="/sign-up" loggedIn={loggedIn}>
-          <SignUp />
-        </Route>
-        <ProtectedRoute path='/' loggedIn={loggedIn}>
-          <Header />
-          <Main
-            onAddPlace={handleAddCardClick}
-            onEditAvatar={handleEditAvatarClick}
-            onEditProfile={handleEditProfileClick}
-            cards={cards}
-            onCardClick={handleCardClick}
-            onCardLike={handleCardLike}
-            onCardDelete={handleCardDelete}
-          />
-          <Footer />
-          <EditProfilePopup
-            isOpen={isEditProfilePopupOpen}
-            onClose={closeAllPopups}
-            onSubmit={handleUpdateUser}
-          />
-          <AddPlacePopup
-            isOpen={isAddCardPopupOpen}
-            onClose={closeAllPopups}
-            onSubmit={handleAddPlaceSubmit}
-          />
-        
-          <ImagePopup card={selectedCard} onClose={closeAllPopups} />
-          <EditAvatarPopup
-            isOpen={isEditAvatarPopupOpen}
-            onClose={closeAllPopups}
-            onSubmit={handleUpdateAvatar}
-          />
-          
+      <div className="page">
+        <Switch>
+          <Route path="/signin">
+            <Signin onSignin={handleSigninSubmit} />
+          </Route>
+          <Route path="/signup">
+            <Signup onSignup={handleSignupSubmit} />
+            <InfoTooltip
+              isOpen={infoTooltipIsOpen}
+              title={infoTooltipMessage}
+              alt={infoTooltipAlt}
+              res={infoTooltipSuccess}
+              onClose={closeAllPopups}
+            />
+          </Route>
+          <ProtectedRoute exact path="/" loggedIn={loggedIn}>
+            <>
+              <Header onLogoutClick={handleSignout}/>
+              <Main
+                onAddPlace={handleAddCardClick}
+                onEditAvatar={handleEditAvatarClick}
+                onEditProfile={handleEditProfileClick}
+                cards={cards}
+                onCardClick={handleCardClick}
+                onCardLike={handleCardLike}
+                onCardDelete={handleCardDelete}
+              />
+              <Footer />
+              <EditProfilePopup
+                isOpen={isEditProfilePopupOpen}
+                onClose={closeAllPopups}
+                onSubmit={handleUpdateUser}
+              />
+              <AddPlacePopup
+                isOpen={isAddCardPopupOpen}
+                onClose={closeAllPopups}
+                onSubmit={handleAddPlaceSubmit}
+              />
+              <ImagePopup card={selectedCard} onClose={closeAllPopups} />
+              <EditAvatarPopup
+                isOpen={isEditAvatarPopupOpen}
+                onClose={closeAllPopups}
+                onSubmit={handleUpdateAvatar}
+              />
+            </>
           </ProtectedRoute>
-      </Switch>
-    </div>
-  </CurrentUserContext.Provider>
+        </Switch>
+      </div>
+    </CurrentUserContext.Provider>
   );
 }
 

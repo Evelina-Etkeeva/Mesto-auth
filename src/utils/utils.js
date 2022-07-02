@@ -8,7 +8,8 @@ export const validationDict = {
   }; //словарь для валидации форм
 
 export const token = 'a81905a8-70e9-49b5-82c2-f5f8e94b1f23';
-export const baseUrl = 'https://mesto.nomoreparties.co/v1/cohort-40'
+export const baseUrl = 'https://mesto.nomoreparties.co/v1/cohort-40';
+export const baseUrlAuth = 'https://auth.nomoreparties.co';
 export const headers = {
   'authorization': token,
   'Content-Type': 'application/json'
