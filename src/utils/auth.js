@@ -1,7 +1,6 @@
 import { baseUrlAuth } from "./utils";
 
 export const register = (password, email) => {
-  console.log(password, email);
   return fetch(`${baseUrlAuth}/signup`, {
     method: "POST",
     headers: {
@@ -10,7 +9,6 @@ export const register = (password, email) => {
     },
     body: JSON.stringify({ password, email }),
   }).then((res) => {
-    console.log(res);
     if (res.ok) {
       return res.json();
     } else {

@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./../index.css";
-import Header from "./Header.js";
 import Main from "./Main.js";
-import Footer from "./Footer";
 import ImagePopup from "./ImagePopup";
 import myApi from "../utils/api";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
@@ -10,7 +8,7 @@ import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup";
 import ProtectedRoute from "./ProtectedRoute";
-import { Route, Switch, Redirect, useHistory } from "react-router-dom";
+import { Route, Switch, useHistory, withRouter } from "react-router-dom";
 import Signin from "./Signin";
 import Signup from "./Signup";
 import { register, login, checkUser } from "../utils/auth";
@@ -25,6 +23,7 @@ function App() {
   const [selectedCard, setSelectedCard] = useState(null);
   const [currentUser, setCurrentUser] = useState({});
   const [loggedIn, setLoggedIn] = useState(false);
+  const [email, setEmail] = useState("");
   const [infoTooltipIsOpen, setInfoTooltipIsOpen] = useState(false);
   const [infoTooltipMessage, setInfoTooltipMessage] = useState("");
   const [infoTooltipAlt, setInfoTooltipAlt] = useState("");
@@ -144,10 +143,11 @@ function App() {
   function handleSignupSubmit(data) {
     register(data.password, data.email)
       .then(() => {
-        history.push("/signin");
         setInfoTooltipSuccess(true);
         setInfoTooltipMessage("Вы успешно зарегистрировались!");
         setInfoTooltipAlt("Изображение информирующее, что всё хорошо!");
+        setLoggedIn(true);
+        history.push("/");
       })
       .catch((err) => {
         setInfoTooltipSuccess(false);
@@ -165,14 +165,11 @@ function App() {
       .then((res) => {
         if (res.token) {
           // сохраняем токен
-          localStorage.setItem("token", res.token);
           setLoggedIn(true);
-          // history.push("/");
-          // console.log(`loggedIn: ${loggedIn}`);
-          console.log(`response: ${res.token}`); // - false
+          setEmail(data.email);
+          localStorage.setItem("token", res.token);
+          history.push("/");
         }
-       
-      
       })
       .catch((err) => {
         console.log("Something went wrong: ", err);
@@ -181,14 +178,13 @@ function App() {
 
   function tokenCheck() {
     const token = localStorage.getItem("token");
-    console.log(`loggedIn: ${loggedIn}`);
     if (token) {
       checkUser(token)
-        .then(res => {
-          if (res){
+        .then((res) => {
+          if (res) {
             setLoggedIn(true);
-            console.log(`loggedIn 2: ${loggedIn}`);
-            return 'logged in';
+            setEmail(res.data.email);
+            history.push("/");
           }
         })
         .catch((err) => {
@@ -197,74 +193,70 @@ function App() {
     }
   }
 
-  function handleSignout(){
+  function handleSignout() {
     localStorage.removeItem("token");
     setLoggedIn(false);
-    history.push("/signin");
+    history.push("/sign-in");
   }
 
-
-
   React.useEffect(() => {
-    tokenCheck()
-  }, [])
-
-  // React.useEffect(() => {
-  //   history.push("/")
-  // }, [loggedIn])
+    tokenCheck();
+  }, []);
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
         <Switch>
-          <Route path="/signin">
+          <Route path="/sign-in">
             <Signin onSignin={handleSigninSubmit} />
           </Route>
-          <Route path="/signup">
+          <Route path="/sign-up">
             <Signup onSignup={handleSignupSubmit} />
-            <InfoTooltip
-              isOpen={infoTooltipIsOpen}
-              title={infoTooltipMessage}
-              alt={infoTooltipAlt}
-              res={infoTooltipSuccess}
-              onClose={closeAllPopups}
-            />
           </Route>
-          <ProtectedRoute exact path="/" loggedIn={loggedIn}>
-            <>
-              <Header onLogoutClick={handleSignout}/>
-              <Main
-                onAddPlace={handleAddCardClick}
-                onEditAvatar={handleEditAvatarClick}
-                onEditProfile={handleEditProfileClick}
-                cards={cards}
-                onCardClick={handleCardClick}
-                onCardLike={handleCardLike}
-                onCardDelete={handleCardDelete}
-              />
-              <Footer />
-              <EditProfilePopup
-                isOpen={isEditProfilePopupOpen}
-                onClose={closeAllPopups}
-                onSubmit={handleUpdateUser}
-              />
-              <AddPlacePopup
-                isOpen={isAddCardPopupOpen}
-                onClose={closeAllPopups}
-                onSubmit={handleAddPlaceSubmit}
-              />
-              <ImagePopup card={selectedCard} onClose={closeAllPopups} />
-              <EditAvatarPopup
-                isOpen={isEditAvatarPopupOpen}
-                onClose={closeAllPopups}
-                onSubmit={handleUpdateAvatar}
-              />
-            </>
-          </ProtectedRoute>
+          <ProtectedRoute
+            exact
+            path="/"
+            loggedIn={loggedIn}
+            component={Main}
+            onLogoutClick={handleSignout}
+            email={email}
+            onAddPlace={handleAddCardClick}
+            onEditAvatar={handleEditAvatarClick}
+            onEditProfile={handleEditProfileClick}
+            cards={cards}
+            onCardClick={handleCardClick}
+            onCardLike={handleCardLike}
+            onCardDelete={handleCardDelete}
+          ></ProtectedRoute>
         </Switch>
+        <>
+          <InfoTooltip
+            isOpen={infoTooltipIsOpen}
+            title={infoTooltipMessage}
+            alt={infoTooltipAlt}
+            res={infoTooltipSuccess}
+            onClose={closeAllPopups}
+          />
+          <EditProfilePopup
+            isOpen={isEditProfilePopupOpen}
+            onClose={closeAllPopups}
+            onSubmit={handleUpdateUser}
+          />
+          <AddPlacePopup
+            isOpen={isAddCardPopupOpen}
+            onClose={closeAllPopups}
+            onSubmit={handleAddPlaceSubmit}
+          />
+          <ImagePopup card={selectedCard} onClose={closeAllPopups} />
+          <EditAvatarPopup
+            isOpen={isEditAvatarPopupOpen}
+            onClose={closeAllPopups}
+            onSubmit={handleUpdateAvatar}
+          />
+        </>
       </div>
     </CurrentUserContext.Provider>
   );
 }
 
-export default App;
+export default withRouter(App);

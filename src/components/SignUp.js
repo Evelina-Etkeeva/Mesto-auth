@@ -1,4 +1,5 @@
 import React from "react";
+
 import logo from "./../images/vector.svg";
 
 function Signup({ onSignup }) {
@@ -11,6 +12,8 @@ function Signup({ onSignup }) {
       password: password,
       email: email,
     });
+    setEmail("");
+    setPassword("");
   }
 
   function handleChangeEmail(e) {
@@ -25,7 +28,9 @@ function Signup({ onSignup }) {
     <>
       <header className="header">
         <img className="logo" src={logo} />
-        <button className="button button_type_login">Регистрация</button>
+        <a className="button button_type_login" href="/sign-in">
+          Войти
+        </a>
       </header>
       <div className="auth">
         <form className="auth__form form">
@@ -62,9 +67,9 @@ function Signup({ onSignup }) {
           >
             Зарегестрироваться
           </button>
-          <button type="button" className="button button_type_signup">
+          <a className="button button_type_signup" href="/sign-in">
             Уже зарегистрированы? Войти
-          </button>
+          </a>
         </form>
       </div>
     </>

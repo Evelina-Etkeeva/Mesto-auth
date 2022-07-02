@@ -1,30 +1,34 @@
 import React from "react";
 import logo from "./../images/vector.svg";
 
-function Signin({onSignin}) {
-    const [email, setEmail] = React.useState("");
-    const [password, setPassword] = React.useState("");
-  
-    function handleSubmit(e) {
-      e.preventDefault();
-      onSignin({
-        password: password,
-        email: email,
-      });
-    }
-  
-    function handleChangeEmail(e) {
-      setEmail(e.target.value);
-    }
-  
-    function handleChangePassword(e) {
-      setPassword(e.target.value);
-    }
-    return (
+function Signin({ onSignin }) {
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    onSignin({
+      password: password,
+      email: email,
+    });
+    setEmail("");
+    setPassword("");
+  }
+
+  function handleChangeEmail(e) {
+    setEmail(e.target.value);
+  }
+
+  function handleChangePassword(e) {
+    setPassword(e.target.value);
+  }
+  return (
     <>
       <header className="header">
         <img className="logo" src={logo} />
-        <button className="button button_type_login">Войти</button>
+        <a className="button button_type_login" href="/sign-up">
+          Регистрация
+        </a>
       </header>
       <div className="auth">
         <form className="auth__form form">
